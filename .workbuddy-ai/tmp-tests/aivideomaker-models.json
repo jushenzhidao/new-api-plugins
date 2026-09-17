@@ -1,0 +1,93 @@
+{
+  "_source": "用户提供的 aivideomaker「API 接口文档」（Base URL https://aivideomaker.ai）。",
+  "_coverage_note": "站点公开文档（/docs、/llms.txt、/docs/aivideo-openapi.json version 1.0.15）目前只声明 minimax 一个生成端点；t2v / i2v / t2v_v3 / i2v_v3 / seedance20 / wan27 / happyhorse 的字段表只存在于用户提供的文档中，未经公开规范确认。用无效 key 探测 8 个端点会全部返回同一个 401 AUTH_FAILED（鉴权在路由分发之前），因此无法用探测区分端点是否存在。",
+  "_usage": "本文件把该文档固化成机器可读契约，供 aivideomaker.openapi.mjs 反向校验插件产出的上游请求体；它不是厂商发布的规范。",
+  "minimax": {
+    "path": "/api/v1/generate/minimax",
+    "required": ["content"],
+    "properties": {
+      "content": { "type": "string" },
+      "duration": { "type": "integer", "minimum": 5, "maximum": 20 },
+      "resolution": { "type": "string", "enum": ["720p", "1080p"] },
+      "tier": { "type": "string", "enum": ["turbo", "base"] },
+      "aspectRatio": { "type": "string", "enum": ["auto", "21:9", "16:9", "4:3", "1:1", "3:4", "9:16"] },
+      "imageUrl": { "type": ["string", "null"] },
+      "lastFrameUrl": { "type": ["string", "null"] },
+      "referenceImageUrls": { "type": "array", "maxItems": 4, "items": { "type": "string" } },
+      "referenceVideoUrl": { "type": ["string", "null"] },
+      "referenceAudioUrls": { "type": "array", "maxItems": 2, "items": { "type": "string" } }
+    }
+  },
+  "t2v": {
+    "path": "/api/v1/generate/t2v",
+    "required": ["prompt", "aspectRatio", "duration"],
+    "properties": {
+      "prompt": { "type": "string" },
+      "aspectRatio": { "type": "string", "enum": ["16:9", "9:16", "1:1"] },
+      "duration": { "type": "string", "enum": ["5", "8"] }
+    }
+  },
+  "i2v": {
+    "path": "/api/v1/generate/i2v",
+    "required": ["image", "duration"],
+    "properties": {
+      "image": { "type": "string" },
+      "prompt": { "type": ["string", "null"] },
+      "duration": { "type": "string", "enum": ["5", "8"] }
+    }
+  },
+  "t2v_v3": {
+    "path": "/api/v1/generate/t2v_v3",
+    "required": ["prompt", "aspectRatio", "duration"],
+    "properties": {
+      "prompt": { "type": "string" },
+      "aspectRatio": { "type": "string", "enum": ["16:9", "9:16", "1:1"] },
+      "duration": { "type": "string", "enum": ["5", "10", "15", "20"] }
+    }
+  },
+  "i2v_v3": {
+    "path": "/api/v1/generate/i2v_v3",
+    "required": ["image", "duration"],
+    "properties": {
+      "image": { "type": "string" },
+      "prompt": { "type": ["string", "null"] },
+      "duration": { "type": "string", "enum": ["5", "10", "15", "20"] }
+    }
+  },
+  "seedance20": {
+    "path": "/api/v1/generate/seedance20",
+    "required": ["duration", "resolution", "ratio"],
+    "properties": {
+      "prompt": { "type": ["string", "null"] },
+      "image": { "type": ["string", "null"] },
+      "video": { "type": ["string", "null"] },
+      "audio": { "type": ["string", "null"] },
+      "duration": { "type": "number", "minimum": 4, "maximum": 15 },
+      "resolution": { "type": "number", "enum": [480, 720] },
+      "ratio": { "type": "string", "enum": ["16:9", "9:16", "1:1"] }
+    }
+  },
+  "wan27": {
+    "path": "/api/v1/generate/wan27",
+    "required": ["prompt", "duration", "resolution", "ratio"],
+    "properties": {
+      "prompt": { "type": "string" },
+      "image": { "type": ["string", "null"] },
+      "duration": { "type": "string", "enum": ["5", "10", "15"] },
+      "resolution": { "type": "string", "enum": ["720P", "1080P"] },
+      "ratio": { "type": "string", "enum": ["16:9", "9:16", "1:1", "4:3", "3:4"] },
+      "promptExtend": { "type": "boolean" }
+    }
+  },
+  "happyhorse": {
+    "path": "/api/v1/generate/happyhorse",
+    "required": ["prompt", "duration", "resolution"],
+    "properties": {
+      "prompt": { "type": "string" },
+      "image": { "type": ["string", "array", "null"], "items": { "type": "string" } },
+      "duration": { "type": "number", "minimum": 3, "maximum": 15 },
+      "resolution": { "type": "string", "enum": ["720P", "1080P"] },
+      "ratio": { "type": "string", "enum": ["16:9", "9:16", "3:4", "4:3", "1:1"] }
+    }
+  }
+}
